@@ -1,0 +1,12 @@
+#!/bin/bash -e
+
+BASE=$(cd "$(dirname "$0")/../../";pwd)
+
+/usr/bin/python $BASE/pynlpini/sentiment/tag_raw_sentiment_txt.py \
+-p "$BASE/data/sentiment/ctrip_hotel/pos;$BASE/data/sentiment/dangdang_book/pos;$BASE/data/sentiment/jd_notebook/pos" \
+-n "$BASE/data/sentiment/ctrip_hotel/neg;$BASE/data/sentiment/dangdang_book/neg;$BASE/data/sentiment/jd_notebook/neg" \
+-t $BASE/tmp/sentiment_training.tmp_features.txt \
+-i $BASE/model/sentiment_feature_index.json \
+-s $BASE/tmp/sentiment_training.tag.txt
+
+$BASE/lib/libsvm-3.18/svm-train -t 0  $BASE/tmp/sentiment_training.tag.txt $BASE/pynlpini/model/sentiment.svm.model

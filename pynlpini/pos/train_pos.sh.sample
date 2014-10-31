@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+BASE=$(cd "$(dirname "$0")/../../";pwd)
+
+/bin/rm -f $BASE/tmp/pos_training.*.tag.txt
+
+/usr/bin/python $BASE/pynlpini/pos/tag_raw_pos_txt.py $BASE/data/pos/pos_training.1.txt $BASE/tmp/pos_training.2.normalize.txt $BASE/tmp/pos_training.1.tag.txt
+
+/bin/cat $BASE/tmp/pos_training.*.tag.txt > $BASE/tmp/pos_training.tag.txt
+
+/usr/local/bin/crf_learn -m 300 -c 4.0 -p 1 $BASE/pynlpini/pos/pos.template $BASE/tmp/pos_training.tag.txt $BASE/pynlpini/model/pos.crf.model

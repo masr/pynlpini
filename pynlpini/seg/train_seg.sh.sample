@@ -1,0 +1,11 @@
+#!/bin/bash -e
+
+BASE=$(cd "$(dirname "$0")/../../";pwd)
+
+/bin/rm -f  $BASE/tmp/seg_training.*.tag.txt
+
+/usr/bin/python $BASE/pynlpini/seg/tag_raw_seg_txt.py $BASE/data/seg/seg_training.1.txt $BASE/tmp/seg_training.7.normalize.txt $BASE/tmp/seg_training.1.tag.txt
+
+/bin/cat $BASE/tmp/seg_training.*.tag.txt > $BASE/tmp/seg_training.tag.txt
+
+/usr/local/bin/crf_learn -m 300 -c 4.0 -p 1 $BASE/pynlpini/seg/seg.template $BASE/tmp/seg_training.tag.txt $BASE/pynlpini/model/seg.crf.model

@@ -1,0 +1,13 @@
+#!/bin/bash -e
+
+BASE=$(cd "$(dirname "$0")/../../../";pwd)
+
+/usr/bin/python $BASE/pynlpini/seg/seg_file.py \
+$BASE/data/word2vec/travel_comments/mafengwo_comments.txt \
+$BASE/pynlpini/model/seg.crf.model \
+$BASE/tmp/word2vec.travel_comments_seg.txt
+
+$BASE/lib/word2vec/word2vec \
+-train $BASE/tmp/word2vec.travel_comments_seg.txt \
+-output $BASE/pynlpini/model/app/travel_comments_word.word2vec.model \
+-cbow 1 -size 200 -window 8 -negative 25 -hs 0 -sample 1e-4 -threads 1 -binary 1 -iter 20

@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+BASE=$(cd "$(dirname "$0")/../../";pwd)
+
+/usr/bin/python $BASE/pynlpini/seg/tag_raw_seg_txt.py $BASE/data/seg/seg_test.2.txt $BASE/tmp/seg_test.2.normalize.txt $BASE/tmp/seg_test.2.tag.txt
+/usr/local/bin/crf_test -m $BASE/pynlpini/model/seg.crf.model $BASE/tmp/seg_test.2.tag.txt > $BASE/tmp/seg_test.2.result.txt
+/usr/bin/python $BASE/pynlpini/seg/evaluate_seg.py $BASE/tmp/seg_test.2.result.txt
