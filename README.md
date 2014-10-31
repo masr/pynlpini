@@ -23,7 +23,7 @@ INSTALLATION
 
 * Install numpy and scipy (If you do not need correlation analysis, you can skip this step)
 
-        sudo yum install blas blas-devel lapack lapack-devel python-devel gcc-gfortran
+        sudo yum install blas blas-devel lapack lapack-devel python-devel
         sudo pip install numpy
         sudo pip install scipy
         sudo pip install six
