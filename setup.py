@@ -12,5 +12,5 @@ setup(name='pynlpini',
       packages=['pynlpini', 'pynlpini.common', 'pynlpini.impression', 'pynlpini.lib', 'pynlpini.lib.gensim',
                 'pynlpini.lib.libsvm', 'pynlpini.ner', 'pynlpini.pos', 'pynlpini.seg', 'pynlpini.semantic',
                 'pynlpini.sentiment', 'pynlpini.web', 'pynlpini.word2vec'],
-      package_data={'pynlpini': ['model/*', 'dict/*', 'web/*', 'lib/*.so']}
+      package_data={'pynlpini': ['model/*', 'dict/*', 'web/*', 'lib/*.so.2']}
 )
