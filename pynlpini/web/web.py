@@ -12,8 +12,8 @@ from pynlpini import NerTagger
 from pynlpini import ImpressionExtractor
 from pynlpini import SentimentClassifier
 from pynlpini import Word2Vector
-from pynlpini import SemanticTagger
-from pynlpini import SemanticHierarchyAnalyzer
+
+
 
 
 app = Flask(__name__)
@@ -75,6 +75,7 @@ def sentiment(txt):
 
 @app.route('/semantic-tag/<word>')
 def semantic_tag(word):
+    from pynlpini import SemanticTagger
     global semantic_tagger
     if semantic_tagger is None:
         semantic_tagger = SemanticTagger()
@@ -83,6 +84,7 @@ def semantic_tag(word):
 
 @app.route('/semantic-hierarchy/<word>')
 def semantic_hierarchy(word):
+    from pynlpini import SemanticHierarchyAnalyzer
     global semantic_hierarchy_analyzer
     if semantic_hierarchy_analyzer is None:
         semantic_hierarchy_analyzer = SemanticHierarchyAnalyzer()
