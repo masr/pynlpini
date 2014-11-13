@@ -67,4 +67,6 @@ if __name__ == '__main__':
     tagger = SegTagger(base_dir + "/../model/seg.crf.model")
     result = tagger.seg_as_txt(
         u"本书源自作者在斯坦福大学教授多年的Web挖掘课程材料，主要关注随机流平面和余弦距离和大数据环境下数据挖掘的实际算法。书中分析了海量数据集数据挖掘常用的算法，介绍了目前Web应用的许多重要话题。主要内容包括")
+    result = tagger.seg_as_txt(u"千岛湖东南湖区船票+门票")
+
     print result

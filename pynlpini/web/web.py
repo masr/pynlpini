@@ -41,9 +41,11 @@ def seg(txt):
 
 @app.route('/pos/<txt>')
 def pos(txt):
-    global pos_tagger
+    global pos_tagger, seg_tagger
+    if seg_tagger is None:
+        seg_tagger = SegTagger()
     if pos_tagger is None:
-        pos_tagger = PosTagger(seg_tagger)
+        pos_tagger = PosTagger(seg_tagger, model_path="../model/pos.crf.model.2")
     return json.dumps(pos_tagger.pos_as_iter(txt) | as_list, ensure_ascii=False)
 
 

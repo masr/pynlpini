@@ -21,7 +21,7 @@ Pynlpini -- python中文NLP工具集
 
         sudo pip install pipe
 
-* 安装 numpy和scipy（如果你不想使用相关性分析的功能，可以忽略这一步）
+* 安装 numpy和scipy（如果你不需要词语或短语的相关性分析，可以忽略这一步）
 
         sudo yum install blas blas-devel lapack lapack-devel python-devel
         sudo pip install numpy
@@ -62,10 +62,22 @@ Pynlpini -- python中文NLP工具集
         python setup.py build
         sudo python setup.py install
         sudo ldconfig
+        
+* 安装redis （如果你不需要语义标签的功能可以跳过这一步）
+
+        cd lib
+        unzip redis.zip
 
 * 下载模型，这个步骤耗时较长，取决于你的网速
 
         ./refresh_model.sh
+    
+    或者你也可以查看`http://www.dataini.com/projects/pynlpini/models/`目录下
+
+* 加载语义标签的模型到redis，之后速度更快（如果你不需要语义标签的功能可以跳过这一步）
+
+        python setup_redis_semantic_tag.py
+
 
 * 有两种方式使用pynlpini
 
@@ -244,4 +256,13 @@ Pynlpini -- python中文NLP工具集
         
     这里可以对一个短语（词语的组合）进行相关性分析，得到的也同样是相关的短语。
         
-       
+     
+TO DO
+------------
+
+* 对于中文繁体的支持
+* 支持和完善情感分析
+* 增加模糊智能匹配的功能
+* TF-IDF
+
+

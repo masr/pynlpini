@@ -21,3 +21,8 @@ class Word2Vector:
             base_dir = os.path.dirname(__file__)
             model_path = os.path.join(base_dir, "./../model/phrase2vec.word2vec.model")
         return Word2Vector.get_word_model(model_path, **kwargs)
+
+
+if __name__ == "__main__":
+    model = Word2Vector.get_phrase_model()
+    print model.most_similar([u'国王', u'王子'], [u'王后'])

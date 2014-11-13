@@ -13,7 +13,7 @@ def is_all_chinese(str_unicode):
     return True if re_han.match(str_unicode) else False
 
 
-with open(os.path.join(os.path.dirname(__file__), "./../dict/stop_word.lst")) as dict_file:
+with open(os.path.join(os.path.dirname(__file__), "../dict/stop_word.csv")) as dict_file:
     STOP_WORD_SET = set([line.strip().decode("utf-8") for line in dict_file.readlines()])
 
 if __name__ == "__main__":
