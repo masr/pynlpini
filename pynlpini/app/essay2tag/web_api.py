@@ -16,8 +16,9 @@ print __file__
 base_dir = os.path.dirname(__file__)
 
 phrase2vector = Word2Vector.get_phrase_model()
-vocabs = phrase2vector.vocab.keys()
+phrase_vocabs = phrase2vector.vocab.keys()
 word2vector = Word2Vector.get_word_model()
+word_vocabs = word2vector.vocab.keys()
 
 with open(base_dir + "/tag.csv") as tag_file:
     tags = [line.decode("utf-8").strip() for line in tag_file.readlines()]
@@ -33,10 +34,11 @@ def tag():
             text = request.form.get('txt')
     else:
         text = request.args.get('txt')
-    words = extract_tags(text, 100) | where(lambda x: x in vocabs) | as_list
+    words = extract_tags(text, 100) | where(lambda x: x in phrase_vocabs) | as_list
     tags_result = tags | select(lambda tag: [tag, phrase2vector.n_similarity(words, [tag])]) | sort(
         key=lambda x: x[1], reverse=True) | as_list
     return json.dumps(tags_result, ensure_ascii=False)
+
 
 @app.route('/tag2', methods=['GET', 'POST'])
 def tag2():
@@ -48,7 +50,7 @@ def tag2():
             text = request.form.get('txt')
     else:
         text = request.args.get('txt')
-    words = extract_tags(text, 100) | where(lambda x: x in vocabs) | as_list
+    words = extract_tags(text, 100) | where(lambda x: x in word_vocabs) | as_list
     tags_result = tags | select(lambda tag: [tag, word2vector.n_similarity(words, [tag])]) | sort(
         key=lambda x: x[1], reverse=True) | as_list
     return json.dumps(tags_result, ensure_ascii=False)
