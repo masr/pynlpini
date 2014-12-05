@@ -39,7 +39,7 @@ def tag():
     return json.dumps(tags_result, ensure_ascii=False)
 
 @app.route('/tag2', methods=['GET', 'POST'])
-def tag():
+def tag2():
     global word2vector
     if request.args.get('txt') is None:
         if request.form.get('txt') is None:
