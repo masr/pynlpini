@@ -12,7 +12,7 @@ from pipe import *
 
 
 app = Flask(__name__)
-
+print __file__
 base_dir = os.path.dirname(__file__)
 
 phrase2vector = Word2Vector.get_phrase_model()
@@ -33,7 +33,7 @@ def tag():
         text = request.args.get('txt')
     words = extract_tags(text, 100) | where(lambda x: x in vocabs) | as_list
     tags_result = tags | select(lambda tag: [tag, phrase2vector.n_similarity(words, [tag])]) | sort(
-        key=lambda x: x[1]) | as_list
+        key=lambda x: x[1], reverse=True) | as_list
     return json.dumps(tags_result, ensure_ascii=False)
 
 
