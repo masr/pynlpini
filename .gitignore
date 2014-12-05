@@ -13,3 +13,6 @@
 /tmp
 /test/model
 /test/tmp
+.project
+.settings
+.pydevproject

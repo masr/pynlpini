@@ -14,7 +14,7 @@ from .sentiment.sentiment_classifier import SentimentClassifier
 
 from .word2vec.word2vector import Word2Vector
 
-from .semantic.semantic_tagger import SemanticTagger
-
-from .semantic.semantic_hierarchy_analyzer import SemanticHierarchyAnalyzer
-
+# from .semantic.semantic_tagger import SemanticTagger
+#
+# from .semantic.semantic_hierarchy_analyzer import SemanticHierarchyAnalyzer
+#

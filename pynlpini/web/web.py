@@ -14,8 +14,6 @@ from pynlpini import SentimentClassifier
 from pynlpini import Word2Vector
 
 
-
-
 app = Flask(__name__)
 
 base_dir = os.path.dirname(__file__)
@@ -25,8 +23,8 @@ pos_tagger = None
 ner_tagger = None
 impression_extractor = None
 sentiment_classifier = None
-semantic_tagger = None
-semantic_hierarchy_analyzer = None
+# semantic_tagger = None
+# semantic_hierarchy_analyzer = None
 word2vector = None
 phrase2vector = None
 
@@ -45,7 +43,7 @@ def pos(txt):
     if seg_tagger is None:
         seg_tagger = SegTagger()
     if pos_tagger is None:
-        pos_tagger = PosTagger(seg_tagger, model_path="../model/pos.crf.model.2")
+        pos_tagger = PosTagger(seg_tagger)
     return json.dumps(pos_tagger.pos_as_iter(txt) | as_list, ensure_ascii=False)
 
 
@@ -73,22 +71,24 @@ def sentiment(txt):
     return str(int(sentiment_classifier.classifier(txt)))
 
 
-@app.route('/semantic-tag/<word>')
-def semantic_tag(word):
-    from pynlpini import SemanticTagger
-    global semantic_tagger
-    if semantic_tagger is None:
-        semantic_tagger = SemanticTagger()
-    return json.dumps(semantic_tagger.get_tags(word), ensure_ascii=False)
-
-
-@app.route('/semantic-hierarchy/<word>')
-def semantic_hierarchy(word):
-    from pynlpini import SemanticHierarchyAnalyzer
-    global semantic_hierarchy_analyzer
-    if semantic_hierarchy_analyzer is None:
-        semantic_hierarchy_analyzer = SemanticHierarchyAnalyzer()
-    return json.dumps(semantic_hierarchy_analyzer.get_hierarchy_tags(word), ensure_ascii=False)
+# @app.route('/semantic-tag/<word>')
+# def semantic_tag(word):
+# from pynlpini import SemanticTagger
+#
+#     global semantic_tagger
+#     if semantic_tagger is None:
+#         semantic_tagger = SemanticTagger()
+#     return json.dumps(semantic_tagger.get_tags(word), ensure_ascii=False)
+#
+#
+# @app.route('/semantic-hierarchy/<word>')
+# def semantic_hierarchy(word):
+#     from pynlpini import SemanticHierarchyAnalyzer
+#
+#     global semantic_hierarchy_analyzer
+#     if semantic_hierarchy_analyzer is None:
+#         semantic_hierarchy_analyzer = SemanticHierarchyAnalyzer()
+#     return json.dumps(semantic_hierarchy_analyzer.get_hierarchy_tags(word), ensure_ascii=False)
 
 
 @app.route('/word2vec/<txt>/<int:topn>')
@@ -105,7 +105,7 @@ def phrase2vec(txt, topn):
     global phrase2vector
     if phrase2vector is None:
         phrase2vector = Word2Vector.get_phrase_model()
-    words = txt.split()
+    words = txt.split() | where(lambda word: word in phrase2vector.vocab.keys)
     return json.dumps(phrase2vector.most_similar(words, topn=topn), ensure_ascii=False)
 
 
