@@ -1,11 +1,8 @@
 # coding=utf-8
 
 import re
-from pynlpini import chinese_processor
-import itertools
+
 from pipe import *
-from pynlpini import PosTagger
-from pynlpini import SegTagger
 
 
 class ImpressionExtractor:
@@ -28,7 +25,7 @@ class ImpressionExtractor:
         for line in lines:
             tags = self.pos_tagger.pos_as_iter(line) | select(process_tag) | as_list
             # for tag in tags:
-            #     print tag[0] + "(" + tag[1] + ")",
+            # print tag[0] + "(" + tag[1] + ")",
             # print ""
             words = [tag[0] for tag in tags]
             flags_with_index = [tag[1] + "_" + str(idx) for idx, tag in enumerate(tags)]
@@ -65,6 +62,9 @@ class ImpressionExtractor:
 
 
 if __name__ == '__main__':
+    from pynlpini import PosTagger
+    from pynlpini import SegTagger
+
     with  open("../../data/app/travel_comments/mafengwo_comments_raw.txt") as comment_file:
         index = 0
         ie = ImpressionExtractor(PosTagger(SegTagger()))

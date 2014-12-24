@@ -10,7 +10,8 @@ setup(name='pynlpini',
       author='Masr',
       author_email='masrin@foxmail.com',
       packages=['pynlpini', 'pynlpini.common', 'pynlpini.impression', 'pynlpini.lib', 'pynlpini.lib.gensim',
-                'pynlpini.lib.libsvm', 'pynlpini.ner', 'pynlpini.pos', 'pynlpini.seg', 'pynlpini.semantic',
-                'pynlpini.sentiment', 'pynlpini.web', 'pynlpini.word2vec'],
-      package_data={'pynlpini': ['model/*', 'dict/*', 'web/*', 'lib/*.so.2']}
+                'pynlpini.ner', 'pynlpini.pos', 'pynlpini.seg', 'pynlpini.web', 'pynlpini.word2vec',
+                "pynlpini.keyword"],
+      package_data={'pynlpini': ['model/*', 'dict/*', 'web/*', 'lib/*.so.2']},
+      requires=['pipe']
 )

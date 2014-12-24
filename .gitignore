@@ -8,6 +8,7 @@
 /pynlpini/sentiment/useless
 /pynlpini/seg/useless
 /pynlpini/word2vec/useless
+/pynlpini/app/word_correlate_tagger/useless
 /build
 /data
 /tmp
@@ -16,3 +17,4 @@
 .project
 .settings
 .pydevproject
+README.md.bak

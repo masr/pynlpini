@@ -8,9 +8,8 @@ Pynlpini -- python中文NLP工具集
 1. 中文词性标注
 1. 地名，人名和组织名的提取
 1. 印象提取
-1. 情感分析（尚不支持）
-1. 语义标签和概念树的分析
 1. 中文词语和短语的相关性
+1. 关键词的提取
 1. 网页版的NLP接口
 
 
@@ -32,16 +31,6 @@ Pynlpini -- python中文NLP工具集
 
         sudo pip install flask
 
-* 安装libsvm-3.18（如果你不需要情感分析的功能，可以忽略这一步）
-
-        cd lib
-        unzip libsvm-3.18.zip
-        cd libsvm-3.18
-        make
-        cd python
-        make
-        cp ../libsvm.so.2 ../../../pynlpini/lib/libsvm.so.2
-
 * 安装word2vec（如果你不需要词语或短语的相关性分析，可以忽略这一步）
 
         cd lib
@@ -62,21 +51,12 @@ Pynlpini -- python中文NLP工具集
         python setup.py build
         sudo python setup.py install
         sudo ldconfig
-        
-* 安装redis （如果你不需要语义标签的功能可以跳过这一步）
-
-        cd lib
-        unzip redis.zip
 
 * 下载模型，这个步骤耗时较长，取决于你的网速
 
         ./refresh_model.sh
     
-    或者你也可以查看`http://www.dataini.com/projects/pynlpini/models/`目录下
-
-* 加载语义标签的模型到redis，之后速度更快（如果你不需要语义标签的功能可以跳过这一步）
-
-        python setup_redis_semantic_tag.py
+    或者你也可以查看`http://www.dataini.com/projects/pynlpini/models/`
 
 
 * 有两种方式使用pynlpini
@@ -203,23 +183,6 @@ Pynlpini -- python中文NLP工具集
     
     第三个参数是该印象在原文本中的位置
 
-* 语义标签和概念树
-
-        from pynlpini import SemanticTagger
-        analyzer = SemanticTagger()
-        analyzer.get_tags(u'大卫·贝克汉姆')
-        [[u'足球明星',u'英国',u'名人',u'体育',u'世界名人',u'人物',u'体育人物',u'各星座名人',u'国际足球明星',u'当代名人',u'知名人物']]
-
-    因为叫同一个名字的事物可能有很多，那么程序无法通过仅仅参考一个名字就得出具体的事物，所以只能给出标签云的列表。
-    因为这里贝克汉姆只有一个，所以标签云的个数只有一个。
-
-        from pynlpini import SemanticHierarchyAnalyzer
-        analyzer = SemanticHierarchyAnalyzer()
-        analyzer.get_hierarchy_tags(u'电力')
-        [u"电能", u"能源", u"技术"]
-
-    返回上级的概念，排在越前面的概念粒度越小，并且被包含在后面一个概念中。
-
 
 * 词语和短语间的相关性
 
@@ -257,6 +220,8 @@ Pynlpini -- python中文NLP工具集
     这里可以对一个短语（词语的组合）进行相关性分析，得到的也同样是相关的短语。
         
      
+* 关键词提取
+
 TO DO
 ------------
 

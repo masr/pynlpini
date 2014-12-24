@@ -6,12 +6,11 @@ import os
 from pipe import *
 from flask import Flask
 
-from pynlpini import SegTagger
-from pynlpini import PosTagger
-from pynlpini import NerTagger
-from pynlpini import ImpressionExtractor
-from pynlpini import SentimentClassifier
-from pynlpini import Word2Vector
+from pynlpini.seg.seg_tagger import SegTagger
+from pynlpini.pos.pos_tagger import PosTagger
+from pynlpini.ner.ner_tagger import NerTagger
+from pynlpini.impression.impression_extractor import ImpressionExtractor
+from pynlpini.keyword.keyword_extractor import KeywordExtractor
 
 
 app = Flask(__name__)
@@ -22,9 +21,7 @@ seg_tagger = None
 pos_tagger = None
 ner_tagger = None
 impression_extractor = None
-sentiment_classifier = None
-# semantic_tagger = None
-# semantic_hierarchy_analyzer = None
+keyword_extractor = None
 word2vector = None
 phrase2vector = None
 
@@ -57,36 +54,50 @@ def ner(txt):
 
 @app.route('/impression/<txt>')
 def impression(txt):
-    global impression_extractor
+    global impression_extractor, pos_tagger, seg_tagger
+    if pos_tagger is None:
+        if seg_tagger is None:
+            seg_tagger = SegTagger()
+        pos_tagger = PosTagger(seg_tagger)
     if impression_extractor is None:
         impression_extractor = ImpressionExtractor(pos_tagger)
     return json.dumps(impression_extractor.extract(txt) | as_list, ensure_ascii=False)
 
 
-@app.route('/sentiment/<txt>')
-def sentiment(txt):
-    global sentiment_classifier
-    if sentiment_classifier is None:
-        sentiment_classifier = SentimentClassifier(seg_tagger)
-    return str(int(sentiment_classifier.classifier(txt)))
+@app.route('/keyword/<txt>')
+def keyword(txt):
+    global keyword_extractor, seg_tagger
+    if keyword_extractor is None:
+        if seg_tagger is None:
+            seg_tagger = SegTagger()
+        keyword_extractor = KeywordExtractor(seg_tagger)
+    return json.dumps(impression_extractor.extract(txt) | as_list, ensure_ascii=False)
+
+
+# @app.route('/sentiment/<txt>')
+# def sentiment(txt):
+# global sentiment_classifier
+# if sentiment_classifier is None:
+# sentiment_classifier = SentimentClassifier(seg_tagger)
+# return str(int(sentiment_classifier.classifier(txt)))
 
 
 # @app.route('/semantic-tag/<word>')
 # def semantic_tag(word):
 # from pynlpini import SemanticTagger
 #
-#     global semantic_tagger
-#     if semantic_tagger is None:
-#         semantic_tagger = SemanticTagger()
-#     return json.dumps(semantic_tagger.get_tags(word), ensure_ascii=False)
+# global semantic_tagger
+# if semantic_tagger is None:
+# semantic_tagger = SemanticTagger()
+# return json.dumps(semantic_tagger.get_tags(word), ensure_ascii=False)
 #
 #
 # @app.route('/semantic-hierarchy/<word>')
 # def semantic_hierarchy(word):
-#     from pynlpini import SemanticHierarchyAnalyzer
+# from pynlpini import SemanticHierarchyAnalyzer
 #
-#     global semantic_hierarchy_analyzer
-#     if semantic_hierarchy_analyzer is None:
+# global semantic_hierarchy_analyzer
+# if semantic_hierarchy_analyzer is None:
 #         semantic_hierarchy_analyzer = SemanticHierarchyAnalyzer()
 #     return json.dumps(semantic_hierarchy_analyzer.get_hierarchy_tags(word), ensure_ascii=False)
 
@@ -95,6 +106,7 @@ def sentiment(txt):
 def word2vec(txt, topn):
     global word2vector
     if word2vector is None:
+        from pynlpini.word2vec.word2vector import Word2Vector
         word2vector = Word2Vector.get_word_model()
     words = txt.split()
     return json.dumps(word2vector.most_similar(words, topn=topn), ensure_ascii=False)
@@ -104,6 +116,7 @@ def word2vec(txt, topn):
 def phrase2vec(txt, topn):
     global phrase2vector
     if phrase2vector is None:
+        from pynlpini.word2vec.word2vector import Word2Vector
         phrase2vector = Word2Vector.get_phrase_model()
     words = txt.split() | where(lambda word: word in phrase2vector.vocab.keys)
     return json.dumps(phrase2vector.most_similar(words, topn=topn), ensure_ascii=False)
